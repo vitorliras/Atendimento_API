@@ -24,9 +24,9 @@ namespace Atendimento_API.Services
             return await _repository.GetByIdAsync(id);
         }
 
-        public async Task AddAsync(Relatorio relatorio)
+        public async Task AddAsync()
         {
-            await _repository.AddAsync(relatorio);
+            await _repository.AddAsync();
         }
 
         public async Task UpdateAsync(Relatorio relatorio)

@@ -20,12 +20,25 @@ namespace Atendimento_API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<IEnumerable<Senha>>> GetAll()
         {
-            var comunicacoes = await _senhaService.GetAllAsync();
-            if (comunicacoes == null)
+            var senhas = await _senhaService.GetAllAsync();
+            if (senhas == null)
             {
                 return NotFound();
             }
-            return Ok(comunicacoes);
+            return Ok(senhas);
+        }
+
+        [HttpGet("painel")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<IEnumerable<Senha>>> GetAllNextFiveKeysAsync()
+        {
+            var senhas = await _senhaService.GetAllNextFiveKeysAsync();
+            if (senhas == null)
+            {
+                return NotFound();
+            }
+            return Ok(senhas);
         }
 
         [HttpGet("{id}")]
@@ -33,12 +46,12 @@ namespace Atendimento_API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<Senha>> GetById(int id)
         {
-            var comunicacao = await _senhaService.GetByIdAsync(id);
-            if (comunicacao == null)
+            var senha = await _senhaService.GetByIdAsync(id);
+            if (senha == null)
             {
                 return NotFound();
             }
-            return Ok(comunicacao);
+            return Ok(senha);
         }
 
         [HttpPost]
@@ -48,6 +61,11 @@ namespace Atendimento_API.Controllers
         {
             try
             {
+                if (senha.dataHoraEmissao == null)
+                {
+                    var timeZoneInfo = TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time");
+                    senha.dataHoraEmissao = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, timeZoneInfo);
+                }
                 await _senhaService.AddAsync(senha);
                 return CreatedAtAction(nameof(GetById), new { id = senha.id }, senha);
             }
@@ -65,6 +83,12 @@ namespace Atendimento_API.Controllers
             if (id != senha.id)
             {
                 return BadRequest();
+            }
+
+            if (senha.dataHoraAtendimento == null)
+            {
+                var timeZoneInfo = TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time");
+                senha.dataHoraAtendimento = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, timeZoneInfo);
             }
 
             try

@@ -20,12 +20,12 @@ namespace Atendimento_API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<IEnumerable<Guiche>>> GetAll()
         {
-            var comunicacoes = await _guicheService.GetAllAsync();
-            if (comunicacoes == null)
+            var guiches = await _guicheService.GetAllAsync();
+            if (guiches == null)
             {
                 return NotFound();
             }
-            return Ok(comunicacoes);
+            return Ok(guiches);
         }
 
         [HttpGet("{id}")]
@@ -33,12 +33,12 @@ namespace Atendimento_API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<Guiche>> GetById(int id)
         {
-            var comunicacao = await _guicheService.GetByIdAsync(id);
-            if (comunicacao == null)
+            var guiche = await _guicheService.GetByIdAsync(id);
+            if (guiche == null)
             {
                 return NotFound();
             }
-            return Ok(comunicacao);
+            return Ok(guiche);
         }
 
         [HttpPost]

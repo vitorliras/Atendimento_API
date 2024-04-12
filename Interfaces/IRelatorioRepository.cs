@@ -6,7 +6,7 @@ namespace Atendimento_API.Interfaces
     {
         Task<IEnumerable<Relatorio>> GetAllAsync();
         Task<Relatorio> GetByIdAsync(int id);
-        Task AddAsync(Relatorio relatorio);
+        Task AddAsync();
         Task UpdateAsync(Relatorio relatorio);
         Task DeleteAsync(int id);
     }

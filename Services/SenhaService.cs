@@ -17,6 +17,11 @@ namespace Atendimento_API.Services
             return await _repository.GetAllAsync();
         }
 
+        public async Task<IEnumerable<Senha>> GetAllNextFiveKeysAsync()
+        {
+            return await _repository.GetAllNextFiveKeysAsync();
+        }
+
         public async Task<Senha> GetByIdAsync(int id)
         {
             return await _repository.GetByIdAsync(id);

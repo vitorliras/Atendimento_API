@@ -20,12 +20,21 @@ namespace Atendimento_API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<IEnumerable<Relatorio>>> GetAll()
         {
-            var comunicacoes = await _relatorioService.GetAllAsync();
-            if (comunicacoes == null)
+            var relatorios = await _relatorioService.GetAllAsync();
+            if (relatorios == null)
             {
                 return NotFound();
             }
-            return Ok(comunicacoes);
+            return Ok(relatorios);
+        }
+
+        [HttpGet("atualizar")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<IEnumerable<Relatorio>>> atualizarRelatorio()
+        {
+            await _relatorioService.AddAsync();
+            return NoContent();
         }
 
         [HttpGet("{id}")]
@@ -33,23 +42,26 @@ namespace Atendimento_API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<Relatorio>> GetById(int id)
         {
-            var comunicacao = await _relatorioService.GetByIdAsync(id);
-            if (comunicacao == null)
+            var relatorio = await _relatorioService.GetByIdAsync(id);
+            if (relatorio == null)
             {
                 return NotFound();
             }
-            return Ok(comunicacao);
+            return Ok(relatorio);
         }
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<Relatorio>> Create(Relatorio relatorio)
+        public async Task<ActionResult<Relatorio>> Create()
         {
             try
             {
-                await _relatorioService.AddAsync(relatorio);
-                return CreatedAtAction(nameof(GetById), new { id = relatorio.id }, relatorio);
+                await _relatorioService.AddAsync();
+
+                //return CreatedAtAction(nameof(GetById), new { id = relatorio.id }, relatorio);
+                return NoContent();
+
             }
             catch (Exception ex)
             {
